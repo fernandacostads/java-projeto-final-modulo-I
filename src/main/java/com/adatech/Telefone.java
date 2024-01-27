@@ -14,7 +14,6 @@ class Telefone {
     public Long getId() {
         return id;
     }
-
     public String getDdd() {
         return ddd;
     }
@@ -22,5 +21,6 @@ class Telefone {
     public Long getNumero() {
         return numero;
     }
+
 }
 
