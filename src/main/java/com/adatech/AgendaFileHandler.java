@@ -63,17 +63,19 @@ public class AgendaFileHandler {
 
     private static List<Telefone> createTelefonesAndAddToContato(String[] parts) {
         List<Telefone> telefones = new ArrayList<>();
+        Long idTelefone = 1L; // Começando a partir do ID 1
         for (int i = 3; i < parts.length; i += 2) {
             try {
                 String ddd = parts[i].trim();
                 Long numero = Long.parseLong(parts[i + 1].trim());
-                telefones.add(new Telefone(null, ddd, numero));
+                telefones.add(new Telefone(idTelefone++, ddd, numero));
             } catch (NumberFormatException e) {
                 System.err.println("Erro ao converter número: " + e.getMessage());
             }
         }
         return telefones;
     }
+
 }
 
 

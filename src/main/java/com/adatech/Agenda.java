@@ -48,6 +48,23 @@ public class Agenda {
         System.out.println("Erro: Contato não encontrado com o ID fornecido.");
     }
 
+    public void editarTelefone(Long contatoId, Long telefoneId, String novoDdd, Long novoNumero) {
+        Contato contato = getContatoById(contatoId);
+        if (contato != null) {
+            Telefone telefone = contato.getTelefoneById(telefoneId);
+            if (telefone != null) {
+                telefone.setDdd(novoDdd);
+                telefone.setNumero(novoNumero);
+                System.out.println("Telefone editado com sucesso!");
+            } else {
+                System.out.println("Erro: Telefone não encontrado no contato.");
+            }
+        } else {
+            System.out.println("Erro: Contato não encontrado com o ID fornecido.");
+        }
+    }
+
+
     public List<Contato> getContatos() {
         return contatos;
     }

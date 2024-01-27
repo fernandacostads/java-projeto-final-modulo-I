@@ -21,6 +21,16 @@ class Telefone {
     public Long getNumero() {
         return numero;
     }
+    public void setDdd(String novoDdd) {
+        this.ddd = novoDdd;
+    }
 
+    public void setNumero(Long novoNumero) {
+        this.numero = novoNumero;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
 

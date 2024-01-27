@@ -133,15 +133,102 @@ public class Main {
             String novoSobreNome = scanner.nextLine();
 
             agenda.editarContato(idEditar, novoNome, novoSobreNome);
+
+            System.out.print("Deseja editar os telefones? (S/N): ");
+            String editarTelefonesOpcao = scanner.nextLine();
+            if (editarTelefonesOpcao.equalsIgnoreCase("S")) {
+                editarTelefones(scanner,agenda, idEditar);
+            }
         } else {
             System.out.println("Contato não encontrado com o ID fornecido.");
         }
     }
 
+    private static void editarTelefones(Scanner scanner, Agenda agenda, Long contatoId) {
+        Contato contato = agenda.getContatoById(contatoId);
+        if (contato != null) {
+            System.out.println("Telefones do Contato:");
+            for (Telefone telefone : contato.getTelefones()) {
+                System.out.println(telefone.getId() + " | " + telefone.getDdd() + " " + telefone.getNumero());
+            }
+
+            System.out.print("Digite o ID do telefone que deseja editar: ");
+            Long idTelefoneEditar = scanner.nextLong();
+            scanner.nextLine();
+            editarTelefoneDoContato(scanner, contato, idTelefoneEditar);
+
+
+        } else {
+            System.out.println("Contato não encontrado.");
+        }
+    }
+
+    private static void editarTelefoneDoContato(Scanner scanner, Contato contato, Long idTelefone) {
+        System.out.print("Digite o novo DDD: ");
+        String novoDdd = scanner.nextLine();
+
+        System.out.print("Digite o novo número do telefone: ");
+        Long novoNumero = scanner.nextLong();
+        scanner.nextLine(); // Limpar o buffer do teclado
+
+        contato.editarTelefone(idTelefone, novoDdd, novoNumero);
+    }
+
+
     private static void salvarAgenda(Agenda agenda) {
         AgendaFileHandler.saveAgenda(agenda);
     }
+
 }
+//    private static void editarTelefones(Scanner scanner,Agenda agenda, Long contatoId) {
+//        Contato contato = agenda.getContatoById(contatoId);
+//
+//        if (contato != null) {
+//
+//        System.out.println("Telefones do Contato:");
+//        for (Telefone telefone : contato.getTelefones()) {
+//            System.out.println(telefone.getId() + " | " + telefone.getDdd() + " " + telefone.getNumero());
+//        }
+//
+//        System.out.println("Digite '0' para parar.");
+//        while (true) {
+//            System.out.print("Digite o DDD do telefone a ser editado (ou '0' para parar): ");
+//            String ddd = scanner.nextLine();
+//            if (ddd.equals("0")) {
+//                break;
+//            }
+//
+//            System.out.print("Digite o número do telefone: ");
+//            Long numero = scanner.nextLong();
+//            scanner.nextLine(); // Limpar o buffer do teclado
+//
+//            Telefone telefoneExistente = contato.getTelefoneByDddAndNumero(ddd, numero);
+//
+//            if (telefoneExistente != null) {
+//                // Telefone encontrado, perguntar se deseja editar
+//                System.out.print("Deseja editar este telefone? (S/N): ");
+//                String resposta = scanner.nextLine().toUpperCase();
+//
+//                if (resposta.equals("S")) {
+//                    // Editar o telefone
+//                    System.out.print("Digite o novo DDD: ");
+//                    String novoDdd = scanner.nextLine();
+//
+//                    System.out.print("Digite o novo número: ");
+//                    Long novoNumero = scanner.nextLong();
+//                    scanner.nextLine(); // Limpar o buffer do teclado
+//
+//                    agenda.editarTelefone(contato.getId(), telefoneExistente.getId(), novoDdd, novoNumero);
+//                }
+//            } else {
+//                System.out.println("Telefone não encontrado.");
+//            }
+//        }
+//    }
+//
+//
+//
+//}
 
 //package com.adatech;
 //
