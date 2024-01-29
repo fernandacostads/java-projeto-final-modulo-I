@@ -133,10 +133,10 @@ public class Main {
             agenda.removerContato(idRemover);
         } catch (InputMismatchException e) {
             System.out.println("Erro: Entrada inválida. Certifique-se de digitar um número para o ID do contato.");
-            scanner.nextLine(); // Limpar o buffer do teclado
+            scanner.nextLine();
         } catch (Exception e) {
             System.out.println("Erro inesperado ao remover contato: " + e.getMessage());
-            scanner.nextLine(); // Limpar o buffer do teclado
+            scanner.nextLine();
         }
     }
 
@@ -167,10 +167,10 @@ public class Main {
             }
         } catch (InputMismatchException e) {
             System.out.println("Erro: Entrada inválida. Certifique-se de digitar um número para o ID do contato.");
-            scanner.nextLine(); // Limpar o buffer do teclado
+            scanner.nextLine();
         } catch (Exception e) {
             System.out.println("Erro inesperado ao editar contato: " + e.getMessage());
-            scanner.nextLine(); // Limpar o buffer do teclado
+            scanner.nextLine();
         }
     }
 
