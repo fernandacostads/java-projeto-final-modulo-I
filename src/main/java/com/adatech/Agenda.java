@@ -47,23 +47,6 @@ public class Agenda {
         System.out.println("Erro: Contato não encontrado com o ID fornecido.");
     }
 
-    public void editarTelefone(Long contatoId, Long telefoneId, String novoDdd, Long novoNumero) {
-        Contato contato = getContatoById(contatoId);
-        if (contato != null) {
-            Telefone telefone = contato.getTelefoneById(telefoneId);
-            if (telefone != null) {
-                telefone.setDdd(novoDdd);
-                telefone.setNumero(novoNumero);
-                System.out.println("Telefone editado com sucesso!");
-            } else {
-                System.out.println("Erro: Telefone não encontrado no contato.");
-            }
-        } else {
-            System.out.println("Erro: Contato não encontrado com o ID fornecido.");
-        }
-    }
-
-
     public List<Contato> getContatos() {
         return contatos;
     }
@@ -77,14 +60,6 @@ public class Agenda {
         return null;
     }
 
-    public void adicionarTelefoneAoContato(Long novoId, Telefone novoTelefone) {
-        Contato contato = getContatoById(novoId);
-        if (contato != null) {
-            contato.adicionarTelefone(novoTelefone);
-        } else {
-            System.out.println("Erro: Contato não encontrado com o ID fornecido.");
-        }
-    }
 
     public boolean telefoneJaCadastrado(Long numero) {
         for (Contato contato : contatos) {
@@ -95,12 +70,4 @@ public class Agenda {
         return false;
     }
 
-    public boolean telefoneJaCadastradoEmOutroContato(Long contatoId, Long numero) {
-        for (Contato contato : contatos) {
-            if (!contato.getId().equals(contatoId) && contato.telefoneJaCadastrado(numero)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

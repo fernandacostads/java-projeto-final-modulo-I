@@ -10,10 +10,10 @@ public class AgendaFileHandler {
     public static void salvaAgenda(Agenda agenda) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (Contato contato : agenda.getContatos()) {
-               escreveContato(writer, contato);
+                escreveContato(writer, contato);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            handleIOException(e);
         }
     }
 
@@ -38,9 +38,13 @@ public class AgendaFileHandler {
                 processamento(agenda, line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            handleIOException(e);
         }
         return agenda;
+    }
+
+    private static void handleIOException(IOException e) {
+        System.err.println("Erro de I/O: " + e.getMessage());
     }
 
     private static void processamento(Agenda agenda, String line) {
