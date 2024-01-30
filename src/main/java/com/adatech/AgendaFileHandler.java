@@ -58,7 +58,7 @@ public class AgendaFileHandler {
                 String nome = parts[1].trim();
                 String sobreNome = parts[2].trim();
                 List<Telefone> telefones = criaTelefonesEAdicionaAoContato(parts);
-                Contato contato = new Contato(id, nome, sobreNome, telefones);
+                Contato contato = new Contato(nome, sobreNome, telefones);
                 agenda.adicionarContato(contato);
             } catch (NumberFormatException e) {
                 System.err.println("Erro ao converter número: " + e.getMessage());

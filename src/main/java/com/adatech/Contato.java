@@ -13,8 +13,8 @@ public class Contato {
     private static Long ultimoIdContato = 0L;
     private Long ultimoIdTelefone;
 
-    public Contato(Long id, String nome, String sobreNome, List<Telefone> telefones) {
-        this.id = id;
+    public Contato(String nome, String sobreNome, List<Telefone> telefones) {
+        this.id = gerarNovoIdContato();
         this.nome = nome;
         this.sobreNome = sobreNome;
         this.telefones = (telefones != null) ? telefones : new ArrayList<>();
@@ -22,6 +22,9 @@ public class Contato {
     }
 
 
+    private Long gerarNovoIdContato() {
+        return ++ultimoIdContato;
+    }
 
     public Long getId() {
         return id;
@@ -62,7 +65,7 @@ public class Contato {
         }
     }
 
-       private Long gerarNovoIdTelefone() {
+    private Long gerarNovoIdTelefone() {
         return ++ultimoIdTelefone;
     }
 

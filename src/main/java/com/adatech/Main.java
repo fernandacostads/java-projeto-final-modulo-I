@@ -1,7 +1,5 @@
 package com.adatech;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {

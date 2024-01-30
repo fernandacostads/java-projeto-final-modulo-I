@@ -15,6 +15,7 @@ public class AgendaController {
 
     public void iniciar() {
         int opcao;
+        boolean sair = false;
         do {
             exibirMenu();
 
@@ -36,14 +37,22 @@ public class AgendaController {
                     editarContato();
                     break;
                 case 4:
+//                    salvarAgenda();
+//                    System.out.println("Mudanças detectadas. Pressione Enter para salvar...");
+//                    scanner.nextLine();
+//                    break;
                     salvarAgenda();
-                    System.out.println("Mudanças detectadas. Pressione Enter para salvar...");
-                    scanner.nextLine();
+                    System.out.print("Mudanças detectadas... \n Sair e Salvar? (S) \n Continuar operações? (C): ");
+                    String continuarOpcao = scanner.nextLine();
+                    if (continuarOpcao.equalsIgnoreCase("S")) {
+                        sair = true;
+                    }
+
                     break;
                 default:
                     System.out.println("Opção inválida. Tente novamente: ");
             }
-        } while (opcao != 4);
+        } while (!sair);
 
         scanner.close();
     }
@@ -67,22 +76,23 @@ public class AgendaController {
 
     private void adicionarContato() {
         try {
-            System.out.print("Digite o ID do novo contato: ");
-            Long novoId = scanner.nextLong();
-            scanner.nextLine();
-            if (agenda.getContatoById(novoId) != null) {
-                System.out.println("Erro: Já existe um contato com o mesmo ID.");
-                System.out.println("Pressione Enter para reiniciar...");
-                scanner.nextLine();
-                return;
-            }
+            // caso queira inserir o id manualmente
+//            System.out.print("Digite o ID do novo contato: ");
+//            Long novoId = scanner.nextLong();
+//            scanner.nextLine();
+//            if (agenda.getContatoById(novoId) != null) {
+//                System.out.println("Erro: Já existe um contato com o mesmo ID.");
+//                System.out.println("Pressione Enter para reiniciar...");
+//                scanner.nextLine();
+//                return;
+//            }
             System.out.print("Digite o nome do novo contato: ");
             String novoNome = scanner.nextLine();
 
             System.out.print("Digite o sobrenome do novo contato: ");
             String novoSobreNome = scanner.nextLine();
 
-            Contato novoContato = new Contato( novoId, novoNome, novoSobreNome, new ArrayList<>());
+            Contato novoContato = new Contato(novoNome, novoSobreNome, new ArrayList<>());
             agenda.adicionarContato(novoContato);
 
             adicionarTelefones(scanner, agenda, novoContato);
@@ -161,7 +171,7 @@ public class AgendaController {
 
                 agenda.editarContato(idEditar, novoNome, novoSobreNome);
 
-                System.out.print("Deseja editar os telefones? (S/N): ");
+                System.out.print("Deseja editar telefones? (S/N): ");
                 String editarTelefonesOpcao = scanner.nextLine();
                 if (editarTelefonesOpcao.equalsIgnoreCase("S")) {
                     editarTelefones(scanner, agenda, idEditar);
