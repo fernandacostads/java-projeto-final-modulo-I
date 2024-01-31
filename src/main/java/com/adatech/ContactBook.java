@@ -29,7 +29,7 @@ public class ContactBook {
 
         if (contactToRemove != null) {
             contacts.remove(contactToRemove);
-            System.out.println("SUCESSO: Contato removido!");
+            System.out.println("Sucesso: Contato removido!");
         } else {
             System.out.println("Erro: Não existe um contato com esse ID.");
         }
@@ -40,7 +40,7 @@ public class ContactBook {
             if (contact.getId().equals(id)) {
                 contact.setFirstName(newFirstName);
                 contact.setLastName(newLastName);
-                System.out.println("SUCESSO: Contato editado!");
+                System.out.println("Sucesso: Contato editado!");
                 return;
             }
         }

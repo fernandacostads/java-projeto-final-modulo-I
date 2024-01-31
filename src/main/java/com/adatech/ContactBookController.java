@@ -19,12 +19,14 @@ public class ContactBookController {
         do {
             showMenu();
 
-            while (!scanner.hasNextInt()) {
-                System.out.println("Opção inválida. Tente novamente.");
-                scanner.next();
+            try {
+                option = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Erro: Opção inválida. Tente novamente.");
+                scanner.nextLine();
+                continue;
             }
-            option = scanner.nextInt();
-            scanner.nextLine();
 
             switch (option) {
                 case 1:
@@ -38,11 +40,7 @@ public class ContactBookController {
                     break;
                 case 4:
                     saveContactBook();
-                    System.out.print("\nFechando programa... \n Fechar e Salvar? (S) \n Continuar operações? (Enter): ");
-                    String continueOption = scanner.nextLine();
-                    if (continueOption.equalsIgnoreCase("S")) {
-                        exit = true;
-                    }
+                    exit = confirmExit();
                     break;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
@@ -56,17 +54,19 @@ public class ContactBookController {
         System.out.println("##################");
         System.out.println("##### AGENDA #####");
         System.out.println("##################\n");
-        System.out.println(">>>> Contatos <<<<");
-        System.out.println("Id | Name");
-        for (Contact contact : contactBook.getContacts()) {
-            System.out.println(contact);
-        }
+        showContacts();
         System.out.println("\n>>>> Menu <<<<");
         System.out.println("1 - Adicionar Contato");
         System.out.println("2 - Remover Contato");
         System.out.println("3 - Editar Contato");
         System.out.println("4 - Sair");
         System.out.print("Escolha uma opção: ");
+    }
+
+    private void showContacts() {
+        System.out.println(">>>> Contatos <<<<");
+        System.out.println("Id | Nome");
+        contactBook.getContacts().forEach(contact -> System.out.println(contact));
     }
 
     private void addContact() {
@@ -80,17 +80,15 @@ public class ContactBookController {
             Contact newContact = new Contact(newFirstName, newLastName, new ArrayList<>());
             contactBook.addContact(newContact);
 
-            addPhones(scanner, contactBook, newContact);
-        } catch (InputMismatchException e) {
-            System.out.println("Erro: Entrada inválida. ");
+            addPhones(newContact);
 
         } catch (Exception e) {
             System.out.println("Erro inesperado ao adicionar um contato: " + e.getMessage());
         }
     }
 
-    private static void addPhones(Scanner scanner, ContactBook contactBook, Contact contact) {
-        System.out.println("Adicione telefones ao novo contato (Digite '0' para parar):");
+    private void addPhones(Contact contact) {
+        System.out.println("Adicione telefones ao novo contato (Digite '0' para parar): ");
 
         while (true) {
             try {
@@ -100,22 +98,19 @@ public class ContactBookController {
                     break;
                 }
 
-                System.out.print("Digite o número do telefone:");
+                System.out.print("Digite o número do telefone: ");
                 Long number = scanner.nextLong();
                 scanner.nextLine();
 
-                Phone newPhone = new Phone(null, ddd, number);
+                Phone newPhone = new Phone(-1L, ddd, number);
 
-                if (contactBook.phoneAlreadyRegistered(newPhone.getNumber())) {
-                    System.out.println("Erro: Este telefone já está cadastrado.\"");
+                if (contact.phoneAlreadyRegistered(newPhone.getNumber())) {
+                    System.out.println("Erro: Este telefone já está cadastrado.");
                     continue;
                 }
 
                 contact.addPhone(newPhone);
 
-            } catch (InputMismatchException e) {
-                System.out.println("Erro: Entrada inválida.");
-                scanner.nextLine();
             } catch (Exception e) {
                 System.out.println("Erro inesperado ao adicionar telefone: " + e.getMessage());
                 scanner.nextLine();
@@ -130,9 +125,6 @@ public class ContactBookController {
             scanner.nextLine();
 
             contactBook.removeContact(idToRemove);
-        } catch (InputMismatchException e) {
-            System.out.println("Erro: Entrada inválida.");
-            scanner.nextLine();
         } catch (Exception e) {
             System.out.println("Erro inesperado ao remover contato: " + e.getMessage());
             scanner.nextLine();
@@ -158,45 +150,22 @@ public class ContactBookController {
                 System.out.print("Deseja editar telefones? (S/N):");
                 String editPhonesOption = scanner.nextLine();
                 if (editPhonesOption.equalsIgnoreCase("S")) {
-                    editPhones(scanner, contactBook, idToEdit);
+                    editPhones(contactToEdit);
                 }
             } else {
                 System.out.println("Contato não encontrado.");
             }
-        } catch (InputMismatchException e) {
-            System.out.println("Erro: Entrada inválida. .");
-            scanner.nextLine();
         } catch (Exception e) {
             System.out.println("Erro inesperado ao editar contato: " + e.getMessage());
             scanner.nextLine();
         }
     }
 
-//    private void editPhones(Scanner scanner, ContactBook contactBook, Long contactId) {
-//        Contact contact = contactBook.getContactById(contactId);
-//        if (contact != null) {
-//            System.out.println("Telefones do contato:");
-//            for (Phone phone : contact.getPhones()) {
-//                System.out.println(phone.getId() + " | " + phone.getDdd() + " " + phone.getNumber());
-//            }
-//
-//            System.out.print("Digite o ID do telefone que deseja editar:  ");
-//            Long idPhoneToEdit = scanner.nextLong();
-//            scanner.nextLine();
-//            editPhoneOfContact(scanner, contact, idPhoneToEdit);
-//
-//
-//        } else {
-//            System.out.println("Contato não encontrado.");
-//        }
-//    }
-private void editPhones(Scanner scanner, ContactBook contactBook, Long contactId) {
-    Contact contact = contactBook.getContactById(contactId);
-    if (contact != null) {
+    private void editPhones(Contact contact) {
         while (true) {
             System.out.println("Telefones do contato:");
             for (Phone phone : contact.getPhones()) {
-                System.out.println(phone.getId() + " | " + phone.getDdd() + " " + phone.getNumber());
+                System.out.println(phone.getId() + "  | " + phone.getDdd() + " " + phone.getNumber());
             }
 
             System.out.println("Escolha uma opção:");
@@ -216,13 +185,13 @@ private void editPhones(Scanner scanner, ContactBook contactBook, Long contactId
 
             switch (option) {
                 case 1:
-                    addPhones(scanner, contactBook, contact);
+                    addPhones(contact);
                     break;
                 case 2:
-                    editPhone(scanner, contact);
+                    editPhone(contact);
                     break;
                 case 3:
-                    removePhone(scanner, contact);
+                    removePhone(contact);
                     break;
                 case 0:
                     return;
@@ -230,45 +199,63 @@ private void editPhones(Scanner scanner, ContactBook contactBook, Long contactId
                     System.out.println("Opção inválida. Tente novamente.");
             }
         }
-    } else {
-        System.out.println("Contato não encontrado.");
     }
-}
 
-    private void editPhone(Scanner scanner, Contact contact) {
+    private void editPhone(Contact contact) {
         System.out.print("Digite o ID do telefone que deseja editar: ");
-        Long idPhoneToEdit = scanner.nextLong();
-        scanner.nextLine();
-        editPhoneOfContact(scanner, contact, idPhoneToEdit);
-    }
-
-    private void removePhone(Scanner scanner, Contact contact) {
-        System.out.print("Digite o ID do telefone que deseja remover: ");
-        Long idPhoneToRemove = scanner.nextLong();
-        scanner.nextLine();
-
-        Phone phoneToRemove = contact.getPhoneById(idPhoneToRemove);
-        if (phoneToRemove != null) {
-            contact.getPhones().remove(phoneToRemove);
-            System.out.println("SUCESSO: Telefone removido!");
-        } else {
-            System.out.println("Erro: Telefone não encontrado.");
+        Long idPhoneToEdit;
+        try {
+            idPhoneToEdit = scanner.nextLong();
+            scanner.nextLine();
+            editPhoneOfContact(contact, idPhoneToEdit);
+        } catch (Exception e) {
+            System.out.println("Erro: Entrada inválida. Tente novamente.");
+            scanner.nextLine();
         }
     }
 
+    private void removePhone(Contact contact) {
+        try {
+            System.out.print("Digite o ID do telefone que deseja remover: ");
+            Long idPhoneToRemove = scanner.nextLong();
+            scanner.nextLine();
 
-    private void editPhoneOfContact(Scanner scanner, Contact contact, Long idPhone) {
-        System.out.print("Digite o novo DDD:");
-        String newDdd = scanner.nextLine();
+            Phone phoneToRemove = contact.getPhoneById(idPhoneToRemove);
+            if (phoneToRemove != null) {
+                contact.getPhones().remove(phoneToRemove);
+                System.out.println("Sucesso: Telefone removido!");
+            } else {
+                System.out.println("Erro: Telefone não encontrado.");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro: Entrada inválida.");
+            scanner.nextLine();
+        }
+    }
 
-        System.out.print("Digite o novo número do telefone: ");
-        Long newNumber = scanner.nextLong();
-        scanner.nextLine();
+    private void editPhoneOfContact(Contact contact, Long idPhone) {
+        try {
+            System.out.print("Digite o novo DDD:");
+            String newDdd = scanner.nextLine();
 
-        contact.editPhone(idPhone, newDdd, newNumber);
+            System.out.print("Digite o novo número do telefone: ");
+            Long newNumber = scanner.nextLong();
+            scanner.nextLine();
+
+            contact.editPhone(idPhone, newDdd, newNumber);
+        } catch (Exception e) {
+            System.out.println("Erro: Entrada inválida. Tente novamente.");
+            scanner.nextLine();
+        }
     }
 
     private void saveContactBook() {
         ContactBookFileHandler.saveContactBook(contactBook);
+    }
+
+    private boolean confirmExit() {
+        System.out.print("\nFechando programa... \n Fechar e Salvar? (S) \n Continuar operações? (Enter): ");
+        String continueOption = scanner.nextLine();
+        return continueOption.equalsIgnoreCase("S");
     }
 }

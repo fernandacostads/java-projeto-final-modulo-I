@@ -8,6 +8,6 @@ public class ContactBookApplication {
         Scanner scanner = new Scanner(System.in);
         ContactBookController contactBookController = new ContactBookController(contactBook, scanner);
         contactBookController.start();
-
+        scanner.close();
     }
 }
