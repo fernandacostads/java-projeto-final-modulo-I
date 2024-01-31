@@ -172,24 +172,90 @@ public class ContactBookController {
         }
     }
 
-    private void editPhones(Scanner scanner, ContactBook contactBook, Long contactId) {
-        Contact contact = contactBook.getContactById(contactId);
-        if (contact != null) {
+//    private void editPhones(Scanner scanner, ContactBook contactBook, Long contactId) {
+//        Contact contact = contactBook.getContactById(contactId);
+//        if (contact != null) {
+//            System.out.println("Telefones do contato:");
+//            for (Phone phone : contact.getPhones()) {
+//                System.out.println(phone.getId() + " | " + phone.getDdd() + " " + phone.getNumber());
+//            }
+//
+//            System.out.print("Digite o ID do telefone que deseja editar:  ");
+//            Long idPhoneToEdit = scanner.nextLong();
+//            scanner.nextLine();
+//            editPhoneOfContact(scanner, contact, idPhoneToEdit);
+//
+//
+//        } else {
+//            System.out.println("Contato não encontrado.");
+//        }
+//    }
+private void editPhones(Scanner scanner, ContactBook contactBook, Long contactId) {
+    Contact contact = contactBook.getContactById(contactId);
+    if (contact != null) {
+        while (true) {
             System.out.println("Telefones do contato:");
             for (Phone phone : contact.getPhones()) {
                 System.out.println(phone.getId() + " | " + phone.getDdd() + " " + phone.getNumber());
             }
 
-            System.out.print("Digite o ID do telefone que deseja editar:  ");
-            Long idPhoneToEdit = scanner.nextLong();
+            System.out.println("Escolha uma opção:");
+            System.out.println("1 - Adicionar Telefone");
+            System.out.println("2 - Editar Telefone");
+            System.out.println("3 - Remover Telefone");
+            System.out.println("0 - Voltar");
+            System.out.print("Opção: ");
+
+            int option;
+            while (!scanner.hasNextInt()) {
+                System.out.println("Opção inválida. Tente novamente.");
+                scanner.next();
+            }
+            option = scanner.nextInt();
             scanner.nextLine();
-            editPhoneOfContact(scanner, contact, idPhoneToEdit);
 
+            switch (option) {
+                case 1:
+                    addPhones(scanner, contactBook, contact);
+                    break;
+                case 2:
+                    editPhone(scanner, contact);
+                    break;
+                case 3:
+                    removePhone(scanner, contact);
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+        }
+    } else {
+        System.out.println("Contato não encontrado.");
+    }
+}
 
+    private void editPhone(Scanner scanner, Contact contact) {
+        System.out.print("Digite o ID do telefone que deseja editar: ");
+        Long idPhoneToEdit = scanner.nextLong();
+        scanner.nextLine();
+        editPhoneOfContact(scanner, contact, idPhoneToEdit);
+    }
+
+    private void removePhone(Scanner scanner, Contact contact) {
+        System.out.print("Digite o ID do telefone que deseja remover: ");
+        Long idPhoneToRemove = scanner.nextLong();
+        scanner.nextLine();
+
+        Phone phoneToRemove = contact.getPhoneById(idPhoneToRemove);
+        if (phoneToRemove != null) {
+            contact.getPhones().remove(phoneToRemove);
+            System.out.println("SUCESSO: Telefone removido!");
         } else {
-            System.out.println("Contato não encontrado.");
+            System.out.println("Erro: Telefone não encontrado.");
         }
     }
+
 
     private void editPhoneOfContact(Scanner scanner, Contact contact, Long idPhone) {
         System.out.print("Digite o novo DDD:");

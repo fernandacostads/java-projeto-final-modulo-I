@@ -14,12 +14,12 @@
  |         |-- java/
  |              |-- com/
  |                   |-- adatech
- |                        |-- Agenda.java
- |                        |-- AgendaController.java
- |                        |-- AgendaFileHandler.java
- |                        |-- Contato.java
- |                        |-- Main.java  
- |                        |-- Telefone.java
+ |                        |-- ContactBook.java
+ |                        |-- ContactBookController.java
+ |                        |-- ContactBookFileHandler.java
+ |                        |-- Contact.java
+ |                        |-- ContactBookApplication.java  
+ |                        |-- Phone.java
  |
  |-- target/
  |-- .gitignore
@@ -72,7 +72,6 @@ Armazenamento de Dados: Utiliza arquivos de texto para armazenar os dados, simul
 ```
 ## Requisitos Funcionais
 
-## Requisitos Funcionais
 
 | **RN** | **Descrição**                                                                                          |
 |--------|--------------------------------------------------------------------------------------------------------|
