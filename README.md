@@ -37,7 +37,7 @@ Para executar o projeto, siga os passos abaixo:
 ```
 $ git clone git@github.com:fernandacostads/java-projeto-final-modulo-I.git
 $ cd java-projeto-final-modulo-I
-$ java -cp target/classes com.adatech.Main
+$ java -cp target/classes com.adatech.ContactBookApplication
 ```
 
 ## Funcionalidades
